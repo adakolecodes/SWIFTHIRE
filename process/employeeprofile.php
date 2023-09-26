@@ -82,7 +82,7 @@ if(isset($_POST['employee'])){
     // Check if the INSERT was successful.
     if ($stmt->rowCount() > 0) {
         $_SESSION['success'] = "Profile information set successfully";
-        header("Location: ../employee-profile.php");
+        header("Location: ../dashboard-employee.php");
     } else {
         $_SESSION['error'] = "Could not process profile information";
         header("Location: ../employee-profile.php");

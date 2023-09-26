@@ -8,12 +8,12 @@ if(!isset($_SESSION['id'])) {
 //Link your database-connect file
 require "config/database-connect.php";
 
-$employeeId = $_SESSION['id'];
-$employeeEmail = $_SESSION['email_address'];
+$employerId = $_SESSION['id'];
+$employerEmail = $_SESSION['email_address'];
 
-$sql = "SELECT * FROM employees_work_specification WHERE employee_id = ?";
+$sql = "SELECT * FROM employers_work_specification WHERE employer_id = ?";
 $stmt = $pdo->prepare($sql);
-$stmt->execute([$employeeId]);
+$stmt->execute([$employerId]);
 $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
@@ -21,7 +21,7 @@ $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Employee Dashboard</title>
+    <title>Employer Dashboard</title>
     <link rel="stylesheet" href="STYLE/dashboard1.css"> <!-- Link to your CSS file -->
     <link rel="stylesheet" href="STYLE/bootstrap.min.css">
 </head>
@@ -47,20 +47,20 @@ $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
             <h1>Welcome</h1>
             <div class="user-info">
                 <img src="profile_image.jpg" alt="Profile Image"> <!-- Replace with dynamic image URL -->
-                <p><strong>Employee ID:</strong> <?php echo $employeeId; ?></p>
-                <p><strong>Employee Email:</strong> <?php echo $employeeEmail; ?></p>
+                <p><strong>Employer ID:</strong> <?php echo $employerId; ?></p>
+                <p><strong>Employer Email:</strong> <?php echo $employerEmail; ?></p>
             </div>
         </div>
 
         <div class="actions mb-5">
-            <a href="employee-profile.php" class="btn btn-primary">Personal Information Form</a>
-            <a href="employee-workspec.php" class="btn btn-primary">Job Application Form</a>
+            <a href="employer-profile.php" class="btn btn-primary">Personal Information Form</a>
+            <a href="employer-workspec.php" class="btn btn-primary">Job Application Form</a>
             <a href="process/logout.php" class="btn btn-danger">Log Out</a>
         </div>
 
         <div>
             <div>
-                <h1>Job Applications</h1>
+                <h1>Matching Employees</h1>
             </div>
             <div>
                 <table class="table table-sm">
@@ -72,6 +72,7 @@ $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             <th>Accomodation</th>
                             <th>Status</th>
                             <th>Employed</th>
+                            <th>View</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -90,6 +91,7 @@ $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?php echo $workSpec['accommodation']; ?></td>
                                 <td><?php echo $workSpec['status']; ?></td>
                                 <td><?php echo $taken; ?></td>
+                                <td><a href="employer-view.php?id=<?php echo $workSpec['id']; ?>" class="btn btn-primary">View</a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

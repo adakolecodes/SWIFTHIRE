@@ -1,35 +1,40 @@
 <?php
-//Start session so as to make use of session on this page
 session_start();
+if(!isset($_SESSION['id'])) {
+    header("Location: login.php");
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <!--------CSS-------->
-    <Link rel="stylesheet" href="STYLE/CANDIDATES.CSS">
-
-    <!------------Iconscout CSS--------->
-    <Link rel="stylesheet" href="https://unicorns.iconscout.com/release/v4.0.0/css/line.css">
-
-    <title>EMPLOYEE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Profile</title>
+    <link rel="stylesheet" href="STYLE/bootstrap.min.css">
 </head>
-
 <body>
-
-    <?php include_once "component/navbar.php"; ?>
     
 
-    <div class="container">
+    <div class="container mt-5 mb-5">
+        <a href="dashboard-employee.php" class="btn btn-primary">Back to dashboard</a>
         <h2>Personal Information Form</h2>
-        <p><?php 
-                if(isset($_SESSION['error'])){
-                    echo $_SESSION['error'];
-                }
-                    unset($_SESSION['error']);
-                ?>
-        </p>
+        <div>
+            <!-- Show success or error message -->
+            <?php 
+                if(isset($_SESSION['error'])){?>
+                    <div class="alert alert-danger">
+                        <p><strong>Error:</strong> <?php echo $_SESSION['error']; ?></p>
+                    </div>
+                <?php }elseif(isset($_SESSION['success'])){?>
+                    <div class="alert alert-success">
+                        <p><strong>Success:</strong> <?php echo $_SESSION['success']; ?></p>
+                    </div>
+                <?php }
+                unset($_SESSION['error']);
+                unset($_SESSION['success']);
+            ?>
+        </div>
         <form action="process/employeeprofile.php" method="POST">
             <div class="row">
                 <div class="col-md-4">
@@ -197,7 +202,7 @@ session_start();
                 </div>
             </div>
             
-            <button type="submit" name="employee">Submit</button>
+            <button type="submit" name="employee" class="btn btn-primary">Submit</button>
         </form>
     </div>
 
@@ -205,17 +210,5 @@ session_start();
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> -->
-
-
-            
-        <footer>
-
-                <section class="footer">
-
-                </section>
-
-        </div>
-        </footer>
 </body>
-
 </html>
