@@ -29,7 +29,7 @@ $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <h2>Job Application Form</h2>
         <form action="process/employerworkspec.php" method="post">
             <div class="form-group" hidden>
-                <label for="employee_id">Employer ID:</label>
+                <label for="employer_id">Employer ID:</label>
                 <input type="text" class="form-control" id="employer_id" name="employer_id" value="<?php echo $_SESSION['id']; ?>" readonly>
             </div>
 

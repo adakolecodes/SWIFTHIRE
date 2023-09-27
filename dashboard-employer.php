@@ -11,7 +11,25 @@ require "config/database-connect.php";
 $employerId = $_SESSION['id'];
 $employerEmail = $_SESSION['email_address'];
 
-$sql = "SELECT * FROM employers_work_specification WHERE employer_id = ?";
+
+$sql = "SELECT * FROM employers WHERE employer_id = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$employerId]);
+$employer = $stmt->fetch(PDO::FETCH_ASSOC);
+
+
+$sql = "
+SELECT
+    e.*
+FROM
+    employees_work_specification e
+INNER JOIN
+    employers_work_specification em
+ON
+    e.job = em.job
+WHERE
+    em.employer_id = ? AND em.status != 'Disapproved' AND e.taken = 0
+";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$employerId]);
 $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -46,7 +64,7 @@ $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="header">
             <h1>Welcome</h1>
             <div class="user-info">
-                <img src="profile_image.jpg" alt="Profile Image"> <!-- Replace with dynamic image URL -->
+                <img src="uploads/<?php echo $employer['passport_photograph']; ?>" alt="Profile Image"> <!-- Replace with dynamic image URL -->
                 <p><strong>Employer ID:</strong> <?php echo $employerId; ?></p>
                 <p><strong>Employer Email:</strong> <?php echo $employerEmail; ?></p>
             </div>
@@ -83,6 +101,11 @@ $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                             }else{
                                 $taken = "Yes";
                             }
+                            if($workSpec['status'] == "Pending" || $workSpec['status'] == "Disapproved"){
+                                $button = "disabled";
+                            }else{
+                                $button = "";
+                            }
                             ?>
                             <tr>
                                 <td><?php echo $workSpec['job']; ?></td>
@@ -91,7 +114,7 @@ $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
                                 <td><?php echo $workSpec['accommodation']; ?></td>
                                 <td><?php echo $workSpec['status']; ?></td>
                                 <td><?php echo $taken; ?></td>
-                                <td><a href="employer-view.php?id=<?php echo $workSpec['id']; ?>" class="btn btn-primary">View</a></td>
+                                <td><a href="employee-view.php?employeeId=<?php echo $workSpec['employee_id']; ?>&workSpecId=<?php echo $workSpec['id']; ?>" class="btn btn-primary <?php echo $button; ?>">View</a></td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>

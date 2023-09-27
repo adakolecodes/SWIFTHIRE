@@ -35,7 +35,11 @@ if(!isset($_SESSION['id'])) {
                 unset($_SESSION['success']);
             ?>
         </div>
-        <form action="process/employerprofile.php" method="post">
+        <form action="process/employerprofile.php" method="post" enctype="multipart/form-data">
+            <div class="form-group" hidden>
+                <label for="employer_id">Employer ID:</label>
+                <input type="text" class="form-control" id="employer_id" name="employer_id" value="<?php echo $_SESSION['id']; ?>" readonly>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group">
@@ -154,7 +158,7 @@ if(!isset($_SESSION['id'])) {
                 </div>
             </div>
 
-            <!-- <div class="row">
+            <div class="row">
                 <div class="col-md-4">
                     <div class="form-group">
                         <label for="nin_upload">NIN Upload:</label>
@@ -173,7 +177,7 @@ if(!isset($_SESSION['id'])) {
                         <input type="file" class="form-control-file" id="passport_photograph" name="passport_photograph" required>
                     </div>
                 </div>
-            </div> -->
+            </div>
 
             <div class="row">
                 <div class="col-md-6">

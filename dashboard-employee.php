@@ -11,6 +11,11 @@ require "config/database-connect.php";
 $employeeId = $_SESSION['id'];
 $employeeEmail = $_SESSION['email_address'];
 
+$sql = "SELECT * FROM employees WHERE employee_id = ?";
+$stmt = $pdo->prepare($sql);
+$stmt->execute([$employeeId]);
+$employee = $stmt->fetch(PDO::FETCH_ASSOC);
+
 $sql = "SELECT * FROM employees_work_specification WHERE employee_id = ?";
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$employeeId]);
@@ -46,7 +51,7 @@ $workSpecs = $stmt->fetchAll(PDO::FETCH_ASSOC);
         <div class="header">
             <h1>Welcome</h1>
             <div class="user-info">
-                <img src="profile_image.jpg" alt="Profile Image"> <!-- Replace with dynamic image URL -->
+                <img src="uploads/<?php echo $employee['passport_photograph']; ?>" alt="Profile Image"> <!-- Replace with dynamic image URL -->
                 <p><strong>Employee ID:</strong> <?php echo $employeeId; ?></p>
                 <p><strong>Employee Email:</strong> <?php echo $employeeEmail; ?></p>
             </div>
